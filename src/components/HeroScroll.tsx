@@ -352,43 +352,45 @@ function SmokeWarningOverlay({ scrollY }: { scrollY: any }) {
   return (
     <motion.div
       style={{ opacity }}
-      className="absolute inset-0 flex items-center justify-between px-[10vw] pointer-events-none z-40 overflow-hidden"
+      className="absolute inset-0 pointer-events-none z-40 overflow-hidden"
     >
-      {/* Left: Cut white paper text container */}
+      {/* Left: Full height cut paper banner */}
       <motion.div
         style={{ x: xLeft }}
-        className="relative bg-[#f4f2ee] p-10 md:p-14 w-[90vw] md:w-[35vw] shadow-[10px_10px_40px_rgba(0,0,0,0.5)] border border-[#d6d4d0] rotate-[-1deg]"
+        className="absolute top-0 left-0 w-[50vw] h-full bg-[#f4f2ee] flex flex-col justify-center px-12 md:px-24 shadow-[20px_0_60px_rgba(0,0,0,0.6)]"
       >
-        <p className="font-body text-[10px] tracking-widest3 text-gray-500 uppercase mb-4 border-b border-gray-300 pb-2">
-          Archival Notice • 1928 Incident
-        </p>
-        <h3 className="font-display text-4xl md:text-5xl font-semibold leading-none mb-6 text-[#1a1a1a] tracking-tight">
-          The Smoking<br />Hazard
-        </h3>
-        <p className="font-body text-sm text-[#333333] leading-relaxed mb-6">
-          On the evening of November 12th, 1928, a single discarded ember in the East Gallery nearly cost the collection its most prized Andalusian canvases. The smoke alone caused permanent deterioration to several unvarnished tempera works.
-        </p>
-        
-        {/* Warning Rectangle */}
-        <div className="border-2 border-red-800/80 bg-red-50 p-4">
-          <p className="font-body font-bold text-xs tracking-widest uppercase text-red-900 mb-1">
-            Strict Warning
+        <div className="max-w-lg">
+          <p className="font-body text-[10px] tracking-widest3 text-gray-500 uppercase mb-4 border-b border-gray-300 pb-2">
+            Archival Notice • 1928 Incident
           </p>
-          <p className="font-body text-xs text-red-800 leading-snug">
-            Combustibles and open flames are absolutely forbidden within these walls. The preservation of history demands your unbroken adherence.
+          <h3 className="font-display text-5xl md:text-7xl font-semibold leading-none mb-8 text-[#1a1a1a] tracking-tight">
+            The Smoking<br />Hazard
+          </h3>
+          <p className="font-body text-base text-[#333333] leading-relaxed mb-8">
+            On the evening of November 12th, 1928, a single discarded ember in the East Gallery nearly cost the collection its most prized Andalusian canvases. The smoke alone caused permanent deterioration to several unvarnished tempera works.
           </p>
+          
+          {/* Warning Rectangle */}
+          <div className="border-2 border-red-800/80 bg-red-50 p-6 shadow-md">
+            <p className="font-body font-bold text-sm tracking-widest uppercase text-red-900 mb-2">
+              Strict Warning
+            </p>
+            <p className="font-body text-sm text-red-800 leading-relaxed">
+              Combustibles and open flames are absolutely forbidden within these walls. The preservation of history demands your unbroken adherence.
+            </p>
+          </div>
         </div>
       </motion.div>
 
-      {/* Right: Smoker Man Image */}
+      {/* Right: Smoker Man Image filling the screen height */}
       <motion.div
         style={{ x: xRight }}
-        className="relative w-[80vw] md:w-[45vw] aspect-[3/4] mix-blend-screen opacity-90"
+        className="absolute bottom-0 right-0 h-full w-[55vw] mix-blend-screen opacity-90"
       >
         <img
           src="/sequence-2/smoker-man.png"
           alt="Vintage man smoking"
-          className="w-full h-full object-contain"
+          className="w-full h-full object-contain object-right-bottom"
         />
       </motion.div>
     </motion.div>

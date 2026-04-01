@@ -15,7 +15,7 @@ export default function AboutSection() {
           animate={inView ? { opacity: 1, x: 0 } : {}}
           transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
         >
-          <p className="font-body text-xs tracking-widest3 uppercase text-accent mb-6">Hall 01 — Our Mission</p>
+          <p className="font-body text-xs tracking-widest3 uppercase text-accent mb-6">Salle 01 — Notre Mission</p>
           <h2 className="font-display text-[clamp(2.5rem,5.5vw,6.5rem)] leading-[1.05] font-light tracking-tight">
             Éduquer et inspirer<br />
             à agir contre le<br />
@@ -33,21 +33,21 @@ export default function AboutSection() {
           className="space-y-8"
         >
           <p className="font-body text-base leading-[1.8] text-muted">
-            GreenMind Museum is a virtual eco-technological museum dedicated to the Sustainable Development Goals 12 and 13. Our mission is to educate visitors about responsible consumption and climate action — through verified data, compelling stories, and innovative technology.
+            Le Musée GreenMind est un musée virtuel écotechnologique dédié aux Objectifs de Développement Durable 12 et 13. Notre mission est de sensibiliser les visiteurs à la consommation responsable et à l&apos;action climatique — à travers des données vérifiées, des récits captivants et des technologies innovantes.
           </p>
           <p className="font-body text-base leading-[1.8] text-muted">
             <strong className="text-text">Problématique :</strong> Comment la technologie et une consommation responsable peuvent-elles aider à lutter contre le changement climatique ?
           </p>
           <p className="font-body text-base leading-[1.8] text-muted">
-            Explore five immersive halls — from the Climate Crisis to Green Tech Innovation — and discover how individual and collective action can shape a sustainable future for our planet.
+            Explorez cinq salles immersives — de la Crise Climatique aux Innovations Vertes — et découvrez comment l&apos;action individuelle et collective peut façonner un avenir durable pour notre planète.
           </p>
 
           {/* Stats */}
           <div className="grid grid-cols-3 gap-6 pt-6 border-t border-border">
             {[
-              { number: '2', label: 'SDGs Covered (12 & 13)' },
-              { number: '5', label: 'Interactive Halls' },
-              { number: '1', label: 'Planet to Protect' },
+              { number: '2', label: 'ODD couverts (12 & 13)' },
+              { number: '5', label: 'Salles interactives' },
+              { number: '1', label: 'Planète à protéger' },
             ].map((s) => (
               <div key={s.label}>
                 <p className="font-display text-3xl text-accent mb-1">{s.number}</p>

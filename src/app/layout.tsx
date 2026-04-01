@@ -13,18 +13,18 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
-  title: 'GreenMind Museum — SDG 12 & 13 Virtual Eco-Museum',
+  title: 'Musée GreenMind — Musée Virtuel Écotechnologique ODD 12 & 13',
   description:
-    'A virtual eco-technological museum exploring responsible consumption (SDG 12) and climate action (SDG 13). Discover verified climate data, green innovations, and take action.',
+    'Un musée virtuel écotechnologique explorant la consommation responsable (ODD 12) et l\'action climatique (ODD 13). Découvrez des données climatiques vérifiées, des innovations vertes et passez à l\'action.',
   openGraph: {
-    title: 'GreenMind Museum — Éduquer et inspirer à agir contre le changement climatique',
+    title: 'Musée GreenMind — Éduquer et inspirer à agir contre le changement climatique',
     images: ['/og-image.jpg'],
   },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={inter.variable}>
+    <html lang="fr" className={inter.variable}>
       <body className="bg-bg text-text overflow-x-hidden">
         <LenisProvider>{children}</LenisProvider>
       </body>

@@ -2,43 +2,42 @@
 import { useRef, useState } from 'react'
 import { motion, useInView, AnimatePresence } from 'framer-motion'
 
-/* ── Quiz questions on SDG 12 & 13 ── */
 const QUIZ_QUESTIONS = [
   {
-    question: 'What does SDG 13 stand for?',
-    options: ['Clean Water', 'Climate Action', 'Life Below Water', 'Affordable Energy'],
+    question: 'Que signifie l\'ODD 13 ?',
+    options: ['Eau propre', 'Action climatique', 'Vie aquatique', 'Énergie abordable'],
     correct: 1,
   },
   {
-    question: 'How much food is wasted globally each year?',
-    options: ['250 million tonnes', '931 million tonnes', '500 million tonnes', '1.5 billion tonnes'],
+    question: 'Combien de nourriture est gaspillée chaque année dans le monde ?',
+    options: ['250 millions de tonnes', '931 millions de tonnes', '500 millions de tonnes', '1,5 milliard de tonnes'],
     correct: 1,
   },
   {
-    question: 'What percentage of the global economy is circular?',
-    options: ['25%', '15.2%', '8.6%', '42%'],
+    question: 'Quel pourcentage de l\'économie mondiale est circulaire ?',
+    options: ['25 %', '15,2 %', '8,6 %', '42 %'],
     correct: 2,
   },
   {
-    question: 'At current consumption rates, how many planets would we need by 2050?',
-    options: ['1.5', '2', '3', '5'],
+    question: 'Au rythme actuel, combien de planètes faudrait-il d\'ici 2050 ?',
+    options: ['1,5', '2', '3', '5'],
     correct: 2,
   },
   {
-    question: 'By how much did global temperature rise in 2024 (above pre-industrial)?',
-    options: ['+0.8°C', '+1.2°C', '+1.55°C', '+2.1°C'],
+    question: 'De combien la température a-t-elle augmenté en 2024 (par rapport à l\'ère préindustrielle) ?',
+    options: ['+0,8°C', '+1,2°C', '+1,55°C', '+2,1°C'],
     correct: 2,
   },
 ]
 
 const CHALLENGES = [
-  { day: 1, task: 'Refuse all single-use plastic today', icon: '🚫' },
-  { day: 2, task: 'Walk or bike instead of driving', icon: '🚶' },
-  { day: 3, task: 'Eat a fully plant-based meal', icon: '🥗' },
-  { day: 4, task: 'Unplug unused electronics', icon: '🔌' },
-  { day: 5, task: 'Repair something instead of buying new', icon: '🔧' },
-  { day: 6, task: 'Share this museum with 3 friends', icon: '📤' },
-  { day: 7, task: 'Plant a seed or water a plant', icon: '🌱' },
+  { day: 1, task: 'Refuser tout plastique à usage unique aujourd\'hui', icon: '🚫' },
+  { day: 2, task: 'Marcher ou pédaler au lieu de conduire', icon: '🚶' },
+  { day: 3, task: 'Manger un repas 100 % végétal', icon: '🥗' },
+  { day: 4, task: 'Débrancher les appareils inutilisés', icon: '🔌' },
+  { day: 5, task: 'Réparer quelque chose au lieu d\'acheter du neuf', icon: '🔧' },
+  { day: 6, task: 'Partager ce musée avec 3 amis', icon: '📤' },
+  { day: 7, task: 'Planter une graine ou arroser une plante', icon: '🌱' },
 ]
 
 function QuizSection() {
@@ -88,16 +87,16 @@ function QuizSection() {
         </h3>
         <p className="font-body text-base text-muted mb-8">
           {score >= 4
-            ? 'Excellent! You\'re a true climate scholar.'
+            ? 'Excellent ! Vous êtes un véritable expert du climat.'
             : score >= 2
-            ? 'Good effort! Keep learning about our planet.'
-            : 'Every expert was once a beginner. Try again!'}
+            ? 'Bon effort ! Continuez à apprendre sur notre planète.'
+            : 'Chaque expert a été débutant. Réessayez !'}
         </p>
         <button
           onClick={resetQuiz}
           className="px-8 py-3 bg-accent text-bg font-body text-xs tracking-widest2 uppercase hover:bg-accent-2 transition-colors duration-300"
         >
-          Try Again
+          Réessayer
         </button>
       </motion.div>
     )
@@ -105,15 +104,13 @@ function QuizSection() {
 
   return (
     <div className="bg-surface border border-border rounded-sm p-10 md:p-14">
-      {/* Progress */}
       <div className="flex items-center justify-between mb-8">
         <p className="font-body text-xs tracking-widest3 uppercase text-accent">
           Question {current + 1} / {QUIZ_QUESTIONS.length}
         </p>
-        <p className="font-body text-xs text-muted">Score: {score}</p>
+        <p className="font-body text-xs text-muted">Score : {score}</p>
       </div>
 
-      {/* Progress bar */}
       <div className="w-full h-1 bg-border rounded-full mb-10 overflow-hidden">
         <motion.div
           className="h-full bg-accent rounded-full"
@@ -178,16 +175,15 @@ function ChallengeCard() {
     <div className="bg-surface border border-border rounded-sm p-10 md:p-14">
       <div className="flex items-center justify-between mb-8">
         <div>
-          <p className="font-body text-xs tracking-widest3 uppercase text-accent mb-2">7-Day Challenge</p>
-          <h3 className="font-display text-2xl md:text-3xl font-semibold">Green Week Challenge</h3>
+          <p className="font-body text-xs tracking-widest3 uppercase text-accent mb-2">Défi 7 jours</p>
+          <h3 className="font-display text-2xl md:text-3xl font-semibold">Semaine Verte</h3>
         </div>
         <div className="text-right">
           <p className="font-display text-3xl font-bold text-accent">{completed}/7</p>
-          <p className="font-body text-xs text-muted">completed</p>
+          <p className="font-body text-xs text-muted">accomplis</p>
         </div>
       </div>
 
-      {/* Progress bar */}
       <div className="w-full h-2 bg-border rounded-full mb-8 overflow-hidden">
         <motion.div
           className="h-full rounded-full"
@@ -219,7 +215,7 @@ function ChallengeCard() {
             </div>
             <span className="text-xl">{ch.icon}</span>
             <div>
-              <p className="font-body text-xs text-accent mb-0.5">Day {ch.day}</p>
+              <p className="font-body text-xs text-accent mb-0.5">Jour {ch.day}</p>
               <p className={`font-body text-sm ${checked[i] ? 'text-muted' : 'text-text'}`}>{ch.task}</p>
             </div>
           </button>
@@ -233,8 +229,8 @@ function ChallengeCard() {
           className="mt-8 p-6 bg-emerald-500/10 border border-emerald-500/30 rounded-sm text-center"
         >
           <span className="text-4xl mb-3 block">🌍</span>
-          <p className="font-display text-xl font-semibold text-emerald-400 mb-2">Challenge Complete!</p>
-          <p className="font-body text-sm text-muted">You&apos;ve made a real difference this week. Keep going!</p>
+          <p className="font-display text-xl font-semibold text-emerald-400 mb-2">Défi accompli !</p>
+          <p className="font-body text-sm text-muted">Vous avez fait une vraie différence cette semaine. Continuez !</p>
         </motion.div>
       )}
     </div>
@@ -247,30 +243,27 @@ export default function ActNowZone() {
 
   return (
     <section id="actnow" ref={sectionRef} className="relative bg-bg py-32 px-8 overflow-hidden">
-      {/* Background glow */}
       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] opacity-[0.04] pointer-events-none"
            style={{ background: 'radial-gradient(circle, #c9a96e 0%, transparent 70%)' }} />
 
       <div className="max-w-5xl mx-auto">
-        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8 }}
           className="text-center mb-20"
         >
-          <p className="font-body text-xs tracking-widest3 uppercase text-accent mb-4">Hall 05 — Act Now Zone</p>
+          <p className="font-body text-xs tracking-widest3 uppercase text-accent mb-4">Salle 05 — Zone d&apos;Action</p>
           <h2 className="font-display text-[clamp(2.5rem,6vw,6rem)] font-light leading-[1.05] tracking-tight mb-6">
-            Your Turn —<br />
-            <span className="font-semibold text-accent">Act Now</span>
+            À votre tour —<br />
+            <span className="font-semibold text-accent">Agissez maintenant</span>
           </h2>
           <p className="font-body text-base text-muted max-w-2xl mx-auto leading-relaxed">
-            Knowledge without action is meaningless. Test what you&apos;ve learned,
-            then take the 7-day challenge to make a real impact.
+            Le savoir sans action est inutile. Testez ce que vous avez appris,
+            puis relevez le défi de 7 jours pour avoir un vrai impact.
           </p>
         </motion.div>
 
-        {/* Quiz */}
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -281,7 +274,6 @@ export default function ActNowZone() {
           <QuizSection />
         </motion.div>
 
-        {/* Challenge */}
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -292,7 +284,6 @@ export default function ActNowZone() {
           <ChallengeCard />
         </motion.div>
 
-        {/* CTA links */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -300,7 +291,7 @@ export default function ActNowZone() {
           transition={{ duration: 0.7 }}
           className="text-center"
         >
-          <p className="font-body text-xs tracking-widest3 uppercase text-accent mb-6">Learn More</p>
+          <p className="font-body text-xs tracking-widest3 uppercase text-accent mb-6">En savoir plus</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
               href="https://sdgs.un.org/goals/goal12"
@@ -308,7 +299,7 @@ export default function ActNowZone() {
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center px-10 py-4 border border-border text-text font-body text-xs tracking-widest2 uppercase hover:border-accent hover:text-accent transition-all duration-300"
             >
-              SDG 12 — Responsible Consumption
+              ODD 12 — Consommation Responsable
             </a>
             <a
               href="https://sdgs.un.org/goals/goal13"
@@ -316,7 +307,7 @@ export default function ActNowZone() {
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center px-10 py-4 bg-accent text-bg font-body text-xs tracking-widest2 uppercase hover:bg-accent-2 transition-colors duration-300"
             >
-              SDG 13 — Climate Action
+              ODD 13 — Action Climatique
             </a>
           </div>
         </motion.div>

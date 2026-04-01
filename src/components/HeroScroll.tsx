@@ -169,7 +169,7 @@ function HeroOverlay({ scrollY }: { scrollY: any }) {
           WebkitTextStroke: '0.4px rgba(0,0,0,0.55)',
         }}
       >
-        Est. 1923 — Tunis, Tunisia
+        Est. 1923 — Tunis, Tunisie
       </p>
 
       {/* Main title — white, glassy shadow */}
@@ -181,7 +181,7 @@ function HeroOverlay({ scrollY }: { scrollY: any }) {
           WebkitTextStroke: '0.4px rgba(255,255,255,0.12)',
         }}
       >
-        Where Art<br />
+        Là où l&apos;Art<br />
         <span
           className="font-semibold"
           style={{
@@ -190,7 +190,7 @@ function HeroOverlay({ scrollY }: { scrollY: any }) {
             WebkitTextStroke: '0.5px rgba(201,169,110,0.35)',
           }}
         >
-          Breathes
+          Respire
         </span>
       </h1>
 
@@ -200,7 +200,7 @@ function HeroOverlay({ scrollY }: { scrollY: any }) {
           className="font-body text-xs tracking-widest3 uppercase"
           style={{ color: 'rgba(255,255,255,0.75)', textShadow: labelShadow }}
         >
-          Scroll to Enter
+          Défiler pour entrer
         </p>
         <motion.div
           className="w-px h-12 bg-white/40"
@@ -310,7 +310,7 @@ function CollectionOverlay({ scrollY }: { scrollY: any }) {
           WebkitTextStroke: '0.4px rgba(0,0,0,0.55)',
         }}
       >
-        Permanent Collection
+        Collection Permanente
       </p>
     </motion.div>
   )
@@ -350,22 +350,22 @@ function SmokeWarningOverlay({ scrollY }: { scrollY: any }) {
         >
           <div className="max-w-[28vw]">
           <p className="font-body text-[10px] tracking-widest3 text-gray-500 uppercase mb-4 border-b border-gray-300 pb-2">
-            Archival Notice • 1928 Incident
+            Avis d'archives • Incident de 1928
           </p>
           <h3 className="font-display text-5xl md:text-7xl font-semibold leading-none mb-8 text-[#1a1a1a] tracking-tight">
-            The Smoking<br />Hazard
+            Le Danger<br />du Tabac
           </h3>
           <p className="font-body text-base text-[#333333] leading-relaxed mb-8">
-            On the evening of November 12th, 1928, a single discarded ember in the East Gallery nearly cost the collection its most prized Andalusian canvases. The smoke alone caused permanent deterioration to several unvarnished tempera works.
+            Le soir du 12 novembre 1928, une braise jetée dans la Galerie Est a failli coûter à la collection ses plus précieuses toiles andalouses. La fumée seule a causé une détérioration permanente de plusieurs œuvres à la détrempe non vernies.
           </p>
           
           {/* Warning Rectangle */}
           <div className="border-2 border-red-800/80 bg-red-50 p-6 shadow-md">
             <p className="font-body font-bold text-sm tracking-widest uppercase text-red-900 mb-2">
-              Strict Warning
+              Avertissement Strict
             </p>
             <p className="font-body text-sm text-red-800 leading-relaxed">
-              Combustibles and open flames are absolutely forbidden within these walls. The preservation of history demands your unbroken adherence.
+              Les combustibles et les flammes ouvertes sont absolument interdits dans ces murs. La préservation de l&apos;histoire exige votre respect absolu.
             </p>
           </div>
         </div>
@@ -379,7 +379,7 @@ function SmokeWarningOverlay({ scrollY }: { scrollY: any }) {
       >
         <img
           src="/sequence-2/smoker-man.png"
-          alt="Vintage man smoking"
+          alt="Homme fumant - époque vintage"
           className="w-full h-full object-contain object-right-bottom"
         />
       </motion.div>

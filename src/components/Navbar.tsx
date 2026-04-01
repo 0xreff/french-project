@@ -3,10 +3,10 @@ import { motion, useScroll, useTransform } from 'framer-motion'
 import Link from 'next/link'
 
 const NAV_LINKS = [
-  { label: 'Climate', href: '#climate' },
-  { label: 'Consumption', href: '#consumption' },
+  { label: 'Climat', href: '#climate' },
+  { label: 'Consommation', href: '#consumption' },
   { label: 'Innovation', href: '#innovation' },
-  { label: 'Act Now', href: '#actnow' },
+  { label: 'Agir', href: '#actnow' },
 ]
 
 /* Soft glassy shadow — readable on both light and dark frames */
@@ -79,7 +79,7 @@ export default function Navbar() {
           textShadow: NAV_SHADOW,
         }}
       >
-        Book a Visit
+        Réserver une visite
       </Link>
     </motion.header>
   )

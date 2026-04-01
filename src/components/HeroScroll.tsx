@@ -312,24 +312,6 @@ function CollectionOverlay({ scrollY }: { scrollY: any }) {
       >
         Permanent Collection
       </p>
-      <h2
-        className="font-display text-[clamp(2.5rem,6vw,6rem)] leading-[1.05] font-light tracking-tight"
-        style={{
-          color: '#ffffff',
-          textShadow: '0 2px 10px rgba(0,0,0,0.5), 0 10px 40px rgba(0,0,0,0.3)',
-        }}
-      >
-        A Century of<br />
-        <span
-          className="font-semibold"
-          style={{
-            color: '#c9a96e',
-            WebkitTextStroke: '0.6px rgba(26,26,24,0.35)',
-          }}
-        >
-          Masterworks
-        </span>
-      </h2>
     </motion.div>
   )
 }

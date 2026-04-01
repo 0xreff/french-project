@@ -3,25 +3,111 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* ── Palette ── */
+  --color-bg:        #0a0a08;
+  --color-surface:   #111110;
+  --color-border:    rgba(255,255,255,0.08);
+  --color-accent:    #c9a96e;
+  --color-accent-2:  #8b6f47;
+  --color-text:      #f0ede6;
+  --color-muted:     #7a7570;
+
+  /* ── Gallery section (light) ── */
+  --color-gallery-bg:   #d6d6d6;
+  --color-gallery-text: #1a1a18;
+
+  /* ── Typography — Inter (Apple SF Pro family) ── */
+  --font-display: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', system-ui, sans-serif;
+  --font-body:    'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Text',    system-ui, sans-serif;
+
+  /* ── Text stroke tokens ──
+     Dark bg: gold stroke at 2 strengths
+     Light bg: dark ink stroke */
+  --stroke-display:  0.6px rgba(201, 169, 110, 0.40);   /* headings on dark bg  */
+  --stroke-accent:   0.5px rgba(201, 169, 110, 0.55);   /* accent/gold text     */
+  --stroke-body:     0.3px rgba(240, 237, 230, 0.18);   /* body text on dark bg */
+  --stroke-muted:    0.3px rgba(122, 117, 112, 0.30);   /* muted labels         */
+  --stroke-gallery:  0.6px rgba(26,   26,  24,  0.30);  /* headings on light bg */
+  --stroke-gallery-p:0.3px rgba(26,   26,  24,  0.20);  /* body on light bg     */
+
+  /* ── Spacing ── */
+  --section-padding: clamp(5rem, 10vw, 10rem);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ─────────────────────────────────────────
+   Base resets
+───────────────────────────────────────── */
+html {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: 'cv02', 'cv03', 'cv04', 'calt', 'ss01';
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+/* ─────────────────────────────────────────
+   Consistent stroke system
+   Applied via class selectors so every text
+   element inherits the right stroke level
+   without touching individual components.
+───────────────────────────────────────── */
+
+/* Tier 1 — large display headings (h1, h2) */
+h1, h2 {
+  -webkit-text-stroke: var(--stroke-display);
+  letter-spacing: -0.02em;
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+/* Tier 2 — sub-headings (h3) */
+h3 {
+  -webkit-text-stroke: var(--stroke-body);
+  letter-spacing: -0.01em;
 }
+
+/* Tier 3 — body paragraphs */
+p {
+  -webkit-text-stroke: var(--stroke-body);
+}
+
+/* Tier 4 — list items, anchors */
+li, a {
+  -webkit-text-stroke: var(--stroke-muted);
+}
+
+/* Override for accent-coloured text */
+.text-accent, [class*="text-accent"] {
+  -webkit-text-stroke: var(--stroke-accent);
+}
+
+/* Override for gallery (light) sections —
+   invert strokes so they read on the pale bg */
+.bg-gallery h1, .bg-gallery h2,
+section[class*="bg-gallery"] h1,
+section[class*="bg-gallery"] h2 {
+  -webkit-text-stroke: var(--stroke-gallery);
+}
+.bg-gallery h3,
+section[class*="bg-gallery"] h3 {
+  -webkit-text-stroke: var(--stroke-gallery-p);
+}
+.bg-gallery p, .bg-gallery li,
+section[class*="bg-gallery"] p {
+  -webkit-text-stroke: var(--stroke-gallery-p);
+}
+
+/* Navbar links — ultra-fine stroke for sharpness */
+header a, header nav a {
+  -webkit-text-stroke: 0.3px rgba(240, 237, 230, 0.20);
+}
+
+/* ─────────────────────────────────────────
+   Scrollbar
+───────────────────────────────────────── */
+::-webkit-scrollbar          { width: 4px; }
+::-webkit-scrollbar-track    { background: var(--color-bg); }
+::-webkit-scrollbar-thumb    { background: var(--color-accent-2); border-radius: 2px; }
+
+/* Selection */
+::selection { background: var(--color-accent); color: #0a0a08; }

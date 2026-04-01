@@ -336,12 +336,19 @@ function SmokeWarningOverlay({ scrollY }: { scrollY: any }) {
       style={{ opacity }}
       className="absolute inset-0 pointer-events-none z-40 overflow-hidden"
     >
-      {/* Left: Full height cut paper banner */}
+      {/* Left: Full height cut paper banner / inclined 40% top to 55% bottom */}
       <motion.div
-        style={{ x: xLeft }}
-        className="absolute top-0 left-0 w-[50vw] h-full bg-[#f4f2ee] flex flex-col justify-center px-12 md:px-24 shadow-[20px_0_60px_rgba(0,0,0,0.6)]"
+        style={{ 
+          x: xLeft,
+          filter: 'drop-shadow(15px 0 40px rgba(0,0,0,0.45))'
+        }}
+        className="absolute top-0 left-0 w-[60vw] h-full z-10"
       >
-        <div className="max-w-lg">
+        <div 
+          className="w-full h-full bg-[#f4f2ee] flex flex-col justify-center px-[8vw]"
+          style={{ clipPath: 'polygon(0 0, 40vw 0, 55vw 100%, 0 100%)' }}
+        >
+          <div className="max-w-[28vw]">
           <p className="font-body text-[10px] tracking-widest3 text-gray-500 uppercase mb-4 border-b border-gray-300 pb-2">
             Archival Notice • 1928 Incident
           </p>
@@ -362,12 +369,13 @@ function SmokeWarningOverlay({ scrollY }: { scrollY: any }) {
             </p>
           </div>
         </div>
+        </div>
       </motion.div>
 
       {/* Right: Smoker Man Image filling the screen height */}
       <motion.div
         style={{ x: xRight }}
-        className="absolute bottom-0 right-0 h-full w-[55vw] mix-blend-screen opacity-90"
+        className="absolute bottom-0 right-0 h-full w-[60vw] mix-blend-screen opacity-90 z-0"
       >
         <img
           src="/sequence-2/smoker-man.png"

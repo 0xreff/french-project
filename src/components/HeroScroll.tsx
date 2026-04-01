@@ -132,6 +132,9 @@ export default function HeroScroll() {
         {/* Musée credits (fades in at scrollY ~916) */}
         <MuseeCredits scrollY={scrollY} />
 
+        {/* Smoke warning overlay (enters ~4700) */}
+        <SmokeWarningOverlay scrollY={scrollY} />
+
         {/* Collection title for sequence-2 */}
         <CollectionOverlay scrollY={scrollY} />
       </div>
@@ -327,6 +330,67 @@ function CollectionOverlay({ scrollY }: { scrollY: any }) {
           Masterworks
         </span>
       </h2>
+    </motion.div>
+  )
+}
+
+/* ─── Smoke Warning overlay — appears at scrollY == 4772 ────── */
+function SmokeWarningOverlay({ scrollY }: { scrollY: any }) {
+  // Animates into place exactly as scrollY approaches ~4772
+  const opacity = useTransform(
+    scrollY,
+    [4550, 4700, 6800, 7100],
+    [0,    1,    1,    0]
+  )
+  
+  // Smoker-man from right
+  const xRight = useTransform(scrollY, [4550, 4772], ['100vw', '0vw'])
+  
+  // Paper from left
+  const xLeft = useTransform(scrollY, [4550, 4772], ['-100vw', '0vw'])
+
+  return (
+    <motion.div
+      style={{ opacity }}
+      className="absolute inset-0 flex items-center justify-between px-[10vw] pointer-events-none z-40 overflow-hidden"
+    >
+      {/* Left: Cut white paper text container */}
+      <motion.div
+        style={{ x: xLeft }}
+        className="relative bg-[#f4f2ee] p-10 md:p-14 w-[90vw] md:w-[35vw] shadow-[10px_10px_40px_rgba(0,0,0,0.5)] border border-[#d6d4d0] rotate-[-1deg]"
+      >
+        <p className="font-body text-[10px] tracking-widest3 text-gray-500 uppercase mb-4 border-b border-gray-300 pb-2">
+          Archival Notice • 1928 Incident
+        </p>
+        <h3 className="font-display text-4xl md:text-5xl font-semibold leading-none mb-6 text-[#1a1a1a] tracking-tight">
+          The Smoking<br />Hazard
+        </h3>
+        <p className="font-body text-sm text-[#333333] leading-relaxed mb-6">
+          On the evening of November 12th, 1928, a single discarded ember in the East Gallery nearly cost the collection its most prized Andalusian canvases. The smoke alone caused permanent deterioration to several unvarnished tempera works.
+        </p>
+        
+        {/* Warning Rectangle */}
+        <div className="border-2 border-red-800/80 bg-red-50 p-4">
+          <p className="font-body font-bold text-xs tracking-widest uppercase text-red-900 mb-1">
+            Strict Warning
+          </p>
+          <p className="font-body text-xs text-red-800 leading-snug">
+            Combustibles and open flames are absolutely forbidden within these walls. The preservation of history demands your unbroken adherence.
+          </p>
+        </div>
+      </motion.div>
+
+      {/* Right: Smoker Man Image */}
+      <motion.div
+        style={{ x: xRight }}
+        className="relative w-[80vw] md:w-[45vw] aspect-[3/4] mix-blend-screen opacity-90"
+      >
+        <img
+          src="/sequence-2/smoker-man.png"
+          alt="Vintage man smoking"
+          className="w-full h-full object-contain"
+        />
+      </motion.div>
     </motion.div>
   )
 }

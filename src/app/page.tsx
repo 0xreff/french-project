@@ -1,8 +1,11 @@
-import Navbar           from '@/components/Navbar'
-import HeroScroll       from '@/components/HeroScroll'
-import AboutSection     from '@/components/AboutSection'
-import CollectionTeaser from '@/components/CollectionTeaser'
-import Footer           from '@/components/Footer'
+import Navbar             from '@/components/Navbar'
+import HeroScroll         from '@/components/HeroScroll'
+import AboutSection       from '@/components/AboutSection'
+import ClimateCrisisHall  from '@/components/ClimateCrisisHall'
+import ConsumptionLab     from '@/components/ConsumptionLab'
+import InnovationGallery  from '@/components/InnovationGallery'
+import ActNowZone         from '@/components/ActNowZone'
+import Footer             from '@/components/Footer'
 
 export default function HomePage() {
   return (
@@ -10,7 +13,10 @@ export default function HomePage() {
       <Navbar />
       <HeroScroll />
       <AboutSection />
-      <CollectionTeaser />
+      <ClimateCrisisHall />
+      <ConsumptionLab />
+      <InnovationGallery />
+      <ActNowZone />
       <Footer />
     </main>
   )

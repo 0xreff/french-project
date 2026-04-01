@@ -15,12 +15,13 @@ export default function AboutSection() {
           animate={inView ? { opacity: 1, x: 0 } : {}}
           transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
         >
-          <p className="font-body text-xs tracking-widest3 uppercase text-accent mb-6">Our Mission</p>
+          <p className="font-body text-xs tracking-widest3 uppercase text-accent mb-6">Hall 01 — Our Mission</p>
           <h2 className="font-display text-[clamp(2.5rem,5.5vw,6.5rem)] leading-[1.05] font-light tracking-tight">
-            Art is not<br />
-            displayed —<br />
-            it is{' '}
-            <span className="font-semibold text-accent" style={{ WebkitTextStroke: '0.6px rgba(201,169,110,0.6)' }}>revealed.</span>
+            Éduquer et inspirer<br />
+            à agir contre le<br />
+            <span className="font-semibold text-accent" style={{ WebkitTextStroke: '0.6px rgba(201,169,110,0.6)' }}>
+              changement climatique.
+            </span>
           </h2>
         </motion.div>
 
@@ -32,18 +33,21 @@ export default function AboutSection() {
           className="space-y-8"
         >
           <p className="font-body text-base leading-[1.8] text-muted">
-            Founded in 1923 within the restored walls of a 19th-century beylical palace, GreenMind Museum has spent a century cultivating one of North Africa&apos;s most distinguished permanent collections — spanning classical Tunisian oil painting, Islamic geometric art, Berber textile traditions, and the most significant contemporary commissions on the continent.
+            GreenMind Museum is a virtual eco-technological museum dedicated to the Sustainable Development Goals 12 and 13. Our mission is to educate visitors about responsible consumption and climate action — through verified data, compelling stories, and innovative technology.
           </p>
           <p className="font-body text-base leading-[1.8] text-muted">
-            We do not merely preserve. We contextualise, interrogate, and celebrate — placing each work in dialogue with the living culture that produced it, and the ever-changing world that inherits it.
+            <strong className="text-text">Problématique :</strong> Comment la technologie et une consommation responsable peuvent-elles aider à lutter contre le changement climatique ?
+          </p>
+          <p className="font-body text-base leading-[1.8] text-muted">
+            Explore five immersive halls — from the Climate Crisis to Green Tech Innovation — and discover how individual and collective action can shape a sustainable future for our planet.
           </p>
 
           {/* Stats */}
           <div className="grid grid-cols-3 gap-6 pt-6 border-t border-border">
             {[
-              { number: '4,200+', label: 'Works in collection' },
-              { number: '100 yr',  label: 'Of continuous curation' },
-              { number: '62',      label: 'Artists represented' },
+              { number: '2', label: 'SDGs Covered (12 & 13)' },
+              { number: '5', label: 'Interactive Halls' },
+              { number: '1', label: 'Planet to Protect' },
             ].map((s) => (
               <div key={s.label}>
                 <p className="font-display text-3xl text-accent mb-1">{s.number}</p>

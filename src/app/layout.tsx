@@ -13,11 +13,11 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
-  title: 'GreenMind Museum — Where Art Breathes',
+  title: 'GreenMind Museum — SDG 12 & 13 Virtual Eco-Museum',
   description:
-    'A singular space for art, contemplation, and discovery. GreenMind Museum presents the finest curated collections in a setting of extraordinary beauty.',
+    'A virtual eco-technological museum exploring responsible consumption (SDG 12) and climate action (SDG 13). Discover verified climate data, green innovations, and take action.',
   openGraph: {
-    title: 'GreenMind Museum',
+    title: 'GreenMind Museum — Éduquer et inspirer à agir contre le changement climatique',
     images: ['/og-image.jpg'],
   },
 }

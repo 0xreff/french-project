@@ -2,7 +2,12 @@
 import { motion, useScroll, useTransform } from 'framer-motion'
 import Link from 'next/link'
 
-const NAV_LINKS = ['Collection', 'Exhibitions', 'Visit', 'About']
+const NAV_LINKS = [
+  { label: 'Climate', href: '#climate' },
+  { label: 'Consumption', href: '#consumption' },
+  { label: 'Innovation', href: '#innovation' },
+  { label: 'Act Now', href: '#actnow' },
+]
 
 /* Soft glassy shadow — readable on both light and dark frames */
 const NAV_SHADOW = '0 1px 3px rgba(0,0,0,0.55), 0 2px 8px rgba(0,0,0,0.22)'
@@ -48,15 +53,15 @@ export default function Navbar() {
       <nav className="relative hidden md:flex gap-10 z-10">
         {NAV_LINKS.map((link) => (
           <Link
-            key={link}
-            href={`#${link.toLowerCase()}`}
+            key={link.label}
+            href={link.href}
             className="font-body text-xs tracking-widest3 uppercase transition-colors duration-300"
             style={{
               color: 'rgba(255,255,255,0.88)',
               textShadow: NAV_SHADOW,
             }}
           >
-            {link}
+            {link.label}
           </Link>
         ))}
       </nav>

@@ -3,9 +3,11 @@ import { useEffect, useRef } from 'react'
 import { useScroll, useTransform, motion, useMotionValueEvent } from 'framer-motion'
 import { useImagePreloader } from '@/hooks/useImagePreloader'
 
-const TOTAL_FRAMES = 91
-const SEQUENCE_PATH = '/sequence-1/'
-const SCROLL_MULTIPLIER = 4
+const SEQ1_FRAMES = 91
+const SEQ2_FRAMES = 91
+const TOTAL_FRAMES = SEQ1_FRAMES + SEQ2_FRAMES
+// Since we have twice the frames, double the scroll length for an identical speed
+const SCROLL_MULTIPLIER = 8
 
 const prefersReduced =
   typeof window !== 'undefined' &&
@@ -15,7 +17,15 @@ export default function HeroScroll() {
   const containerRef = useRef<HTMLDivElement>(null)
   const canvasRef    = useRef<HTMLCanvasElement>(null)
 
-  const { images, loaded, progress } = useImagePreloader(SEQUENCE_PATH, TOTAL_FRAMES)
+  // Preload both sequences
+  const seq1 = useImagePreloader('/sequence-1/', SEQ1_FRAMES, 4, 'jpg')
+  // Sequence 2 has naming ezgif-frame-001.jpg
+  const seq2 = useImagePreloader('/sequence-2/ezgif-frame-', SEQ2_FRAMES, 3, 'jpg')
+
+  const loaded = seq1.loaded && seq2.loaded
+  // Average progress
+  const progress = (seq1.progress + seq2.progress) / 2
+
   const { scrollY } = useScroll()
 
   useMotionValueEvent(scrollY, 'change', (latest) => {
@@ -29,10 +39,20 @@ export default function HeroScroll() {
 
   function drawFrame(index: number) {
     const canvas = canvasRef.current
-    if (!canvas || !images[index]) return
+    if (!canvas) return
     const ctx = canvas.getContext('2d')
     if (!ctx) return
-    const img = images[index]
+    
+    // Choose which sequence array to pull from
+    let img: HTMLImageElement | undefined
+    if (index < SEQ1_FRAMES) {
+      img = seq1.images[index]
+    } else {
+      img = seq2.images[index - SEQ1_FRAMES]
+    }
+    
+    if (!img) return
+
     canvas.width  = window.innerWidth
     canvas.height = window.innerHeight
     const scale = Math.max(canvas.width / img.naturalWidth, canvas.height / img.naturalHeight)
@@ -57,7 +77,7 @@ export default function HeroScroll() {
     window.addEventListener('resize', onResize)
     return () => window.removeEventListener('resize', onResize)
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loaded, images])
+  }, [loaded, seq1.images, seq2.images])
 
   return (
     <section ref={containerRef} className="relative" style={{ height: `${(SCROLL_MULTIPLIER + 1) * 100}vh` }}>
@@ -109,8 +129,11 @@ export default function HeroScroll() {
         {/* Hero text (fades at scroll start) */}
         <HeroOverlay scrollY={scrollY} />
 
-        {/* Musée credits (fade in at scrollY ~916) */}
+        {/* Musée credits (fades in at scrollY ~916) */}
         <MuseeCredits scrollY={scrollY} />
+
+        {/* Collection title for sequence-2 */}
+        <CollectionOverlay scrollY={scrollY} />
       </div>
     </section>
   )
@@ -255,6 +278,55 @@ function MuseeCredits({ scrollY }: { scrollY: any }) {
           </p>
         ))}
       </div>
+    </motion.div>
+  )
+}
+
+/* ─── Collection overlay — appears during Sequence 2 ────── */
+function CollectionOverlay({ scrollY }: { scrollY: any }) {
+  // SCROLL_MULTIPLIER = 8 means total scroll is 800vh.
+  // Sequence 1 ends around 400vh. Sequence 2 starts around 400vh.
+  // We fade in the "Collection" text around 4500px, keeping it visible until ~7500px.
+  const opacity = useTransform(
+    scrollY,
+    [4500, 5000, 7500, 8000],
+    [0,    1,    1,    0]
+  )
+  const y = useTransform(scrollY, [4500, 5000], [40, 0])
+
+  return (
+    <motion.div
+      style={{ opacity, y }}
+      className="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none z-30"
+    >
+      <p
+        className="font-body text-xs tracking-widest3 uppercase mb-4"
+        style={{
+          color: 'var(--color-accent)',
+          textShadow: '0 1px 4px rgba(0,0,0,0.6)',
+          WebkitTextStroke: '0.4px rgba(0,0,0,0.55)',
+        }}
+      >
+        Permanent Collection
+      </p>
+      <h2
+        className="font-display text-[clamp(2.5rem,6vw,6rem)] leading-[1.05] font-light tracking-tight"
+        style={{
+          color: '#ffffff',
+          textShadow: '0 2px 10px rgba(0,0,0,0.5), 0 10px 40px rgba(0,0,0,0.3)',
+        }}
+      >
+        A Century of<br />
+        <span
+          className="font-semibold"
+          style={{
+            color: '#c9a96e',
+            WebkitTextStroke: '0.6px rgba(26,26,24,0.35)',
+          }}
+        >
+          Masterworks
+        </span>
+      </h2>
     </motion.div>
   )
 }

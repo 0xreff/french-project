@@ -14,7 +14,7 @@ export default function LenisProvider({ children }: { children: React.ReactNode 
     lenisRef.current = lenis
 
     // Expose on window so Framer Motion useScroll can sync
-    ;(window as any).__lenis = lenis
+    ;(window as any).__lenis = lenis // eslint-disable-line @typescript-eslint/no-explicit-any
 
     let rafId: number
     function raf(time: number) {

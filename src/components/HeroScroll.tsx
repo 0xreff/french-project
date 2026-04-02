@@ -62,7 +62,13 @@ export default function HeroScroll() {
   }
 
   useEffect(() => {
-    if (loaded) prefersReduced ? drawFrame(TOTAL_FRAMES - 1) : drawFrame(0)
+    if (loaded) {
+      if (prefersReduced) {
+        drawFrame(TOTAL_FRAMES - 1);
+      } else {
+        drawFrame(0);
+      }
+    }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loaded])
 
@@ -143,7 +149,7 @@ export default function HeroScroll() {
 }
 
 /* ─── Hero "Where Art Breathes" ─────────────────────────────────── */
-function HeroOverlay({ scrollY }: { scrollY: any }) {
+function HeroOverlay({ scrollY }: { scrollY: any }) { // eslint-disable-line @typescript-eslint/no-explicit-any
   const opacity = useTransform(scrollY, [0, 320], [1, 0])
   const y       = useTransform(scrollY, [0, 320], [0, -36])
 
@@ -213,7 +219,7 @@ function HeroOverlay({ scrollY }: { scrollY: any }) {
 }
 
 /* ─── Musée credits — fixed overlay, appears at scrollY ≈ 916 ────── */
-function MuseeCredits({ scrollY }: { scrollY: any }) {
+function MuseeCredits({ scrollY }: { scrollY: any }) { // eslint-disable-line @typescript-eslint/no-explicit-any
   /*  0   → 850 : invisible
       850 → 960 : fade in
       960 → 2800: fully visible (fixed above sequence)
@@ -286,7 +292,7 @@ function MuseeCredits({ scrollY }: { scrollY: any }) {
 }
 
 /* ─── Collection overlay — appears during Sequence 2 ────── */
-function CollectionOverlay({ scrollY }: { scrollY: any }) {
+function CollectionOverlay({ scrollY }: { scrollY: any }) { // eslint-disable-line @typescript-eslint/no-explicit-any
   // SCROLL_MULTIPLIER = 8 means total scroll is 800vh.
   // Sequence 1 ends around 400vh. Sequence 2 starts around 400vh.
   // We fade in the "Collection" text around 4500px, keeping it visible until ~7500px.
@@ -317,7 +323,7 @@ function CollectionOverlay({ scrollY }: { scrollY: any }) {
 }
 
 /* ─── Smoke Warning overlay — appears at scrollY == 4772 ────── */
-function SmokeWarningOverlay({ scrollY }: { scrollY: any }) {
+function SmokeWarningOverlay({ scrollY }: { scrollY: any }) { // eslint-disable-line @typescript-eslint/no-explicit-any
   // Animates into place exactly as scrollY approaches ~4772
   const opacity = useTransform(
     scrollY,
@@ -350,7 +356,7 @@ function SmokeWarningOverlay({ scrollY }: { scrollY: any }) {
         >
           <div className="max-w-[28vw]">
           <p className="font-body text-[10px] tracking-widest3 text-gray-500 uppercase mb-4 border-b border-gray-300 pb-2">
-            Avis d'archives • Incident de 1928
+            Avis d&apos;archives • Incident de 1928
           </p>
           <h3 className="font-display text-5xl md:text-7xl font-semibold leading-none mb-8 text-[#1a1a1a] tracking-tight">
             Le Danger<br />du Tabac

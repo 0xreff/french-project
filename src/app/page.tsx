@@ -10,6 +10,7 @@ import Footer             from '@/components/Footer'
 export default function HomePage() {
   return (
     <main>
+      <div className="hidden" aria-hidden="true" data-version="prod-final-fixed" />
       <Navbar />
       <HeroScroll />
       <AboutSection />

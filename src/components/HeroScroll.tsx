@@ -43,6 +43,11 @@ export default function HeroScroll() {
     const ctx = canvas.getContext('2d')
     if (!ctx) return
     
+    // Fallbacks to avoid NaN, negative, or overflow issues at extreme scroll positions
+    if (isNaN(index)) index = 0;
+    if (index < 0) index = 0;
+    if (index >= TOTAL_FRAMES) index = TOTAL_FRAMES - 1;
+
     // Choose which sequence array to pull from
     let img: HTMLImageElement | undefined
     if (index < SEQ1_FRAMES) {
@@ -51,7 +56,8 @@ export default function HeroScroll() {
       img = seq2.images[index - SEQ1_FRAMES]
     }
     
-    if (!img) return
+    // Safely return if image is undefined or its dimensions aren't ready
+    if (!img || img.naturalWidth === 0 || img.naturalHeight === 0) return
 
     canvas.width  = window.innerWidth
     canvas.height = window.innerHeight
@@ -150,71 +156,88 @@ export default function HeroScroll() {
 
 /* ─── Hero "Where Art Breathes" ─────────────────────────────────── */
 function HeroOverlay({ scrollY }: { scrollY: any }) { // eslint-disable-line @typescript-eslint/no-explicit-any
-  const opacity = useTransform(scrollY, [0, 320], [1, 0])
-  const y       = useTransform(scrollY, [0, 320], [0, -36])
+  const textOpacity = useTransform(scrollY, [0, 275], [1, 0])
+  const bgOpacity   = useTransform(scrollY, [0, 275], [1, 0])
+  const y           = useTransform(scrollY, [0, 275], [0, -40])
 
   /* Glassy, soft shadow — not heavy black */
-  const textShadow = [
-    '0 1px 2px rgba(0,0,0,0.55)',
-    '0 3px 12px rgba(0,0,0,0.30)',
-    '0 0 40px rgba(0,0,0,0.18)',
-  ].join(', ')
-
-  const labelShadow = '0 1px 3px rgba(0,0,0,0.55), 0 2px 8px rgba(0,0,0,0.25)'
-
   return (
-    <motion.div
-      style={{ opacity, y }}
-      className="absolute inset-0 flex flex-col items-center justify-end pb-24 text-center pointer-events-none z-20"
-    >
-      {/* Eyebrow — fine black stroke + soft shadow */}
-      <p
-        className="font-body text-xs tracking-widest3 uppercase text-accent mb-6"
-        style={{
-          textShadow: labelShadow,
-          WebkitTextStroke: '0.4px rgba(0,0,0,0.55)',
-        }}
+    <div className="absolute inset-0 flex flex-col items-center justify-end pb-32 text-center pointer-events-none z-20 px-6">
+      {/* LAYER 1: Atmospheric Blur (Extremely Weak and Airy) */}
+      <motion.div 
+        className="absolute inset-0 flex items-center justify-center -bottom-32"
+        style={{ opacity: bgOpacity }}
       >
-        Est. 1923 — Tunis, Tunisie
-      </p>
-
-      {/* Main title — white, glassy shadow */}
-      <h1
-        className="font-display text-[clamp(3rem,8vw,8rem)] leading-[1.0] font-light mb-8 max-w-4xl tracking-tight"
-        style={{
-          color: '#ffffff',
-          textShadow,
-          WebkitTextStroke: '0.4px rgba(255,255,255,0.12)',
-        }}
-      >
-        Là où l&apos;Art<br />
-        <span
-          className="font-semibold"
+        <div 
+          className="w-full max-w-6xl h-[70vh]"
           style={{
-            color: '#c9a96e',
-            textShadow,
-            WebkitTextStroke: '0.5px rgba(201,169,110,0.35)',
+            background: 'radial-gradient(ellipse at center, rgba(0,0,0,0.12) 0%, transparent 85%)',
+            backdropFilter: 'blur(15px) saturate(110%)',
+            WebkitBackdropFilter: 'blur(15px) saturate(110%)',
+            maskImage: 'radial-gradient(ellipse at center, black 15%, transparent 95%)',
+            WebkitMaskImage: 'radial-gradient(ellipse at center, black 15%, transparent 95%)',
+          }}
+        />
+      </motion.div>
+
+      {/* LAYER 2: Hero Text (Pure and Minimalist) */}
+      <motion.div
+        style={{ opacity: textOpacity, y }}
+        className="relative flex flex-col items-center gap-2"
+      >
+        {/* Eyebrow — Est. 1923 */}
+        <p
+          className="font-body text-xs tracking-widest3 uppercase text-accent mb-6"
+          style={{
+            filter: 'drop-shadow(0 0 5px rgba(0,0,0,0.4))',
+            WebkitTextStroke: '0.8px rgba(255,255,255,0.95)',
           }}
         >
-          Respire
-        </span>
-      </h1>
-
-      {/* Scroll cue */}
-      <div className="flex flex-col items-center gap-3">
-        <p
-          className="font-body text-xs tracking-widest3 uppercase"
-          style={{ color: 'rgba(255,255,255,0.75)', textShadow: labelShadow }}
-        >
-          Défiler pour entrer
+          Est. 1923 — Tunis, Tunisie
         </p>
-        <motion.div
-          className="w-px h-12 bg-white/40"
-          animate={{ scaleY: [1, 0.4, 1] }}
-          transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut' }}
-        />
-      </div>
-    </motion.div>
+
+        {/* Main title — Pure White/Gold, Solid Fill with Stroke Behind */}
+        <h1
+          className="font-display text-[clamp(2.5rem,7vw,7rem)] leading-[1.05] font-light mb-8 max-w-3xl tracking-tight"
+          style={{
+            color: '#ffffff',
+            WebkitTextStroke: '1.2px rgba(255,255,255,0.15)',
+            paintOrder: 'stroke fill',
+          }}
+        >
+          Là où l&apos;Art<br />
+          <span
+            className="font-semibold"
+            style={{
+              color: '#c9a96e',
+              WebkitTextStroke: '2px rgba(255,255,255,1)',
+              paintOrder: 'stroke fill',
+            }}
+          >
+            Respire
+          </span>
+        </h1>
+
+        {/* Scroll cue */}
+        <div className="flex flex-col items-center gap-3">
+          <p
+            className="font-body text-xs tracking-widest3 uppercase"
+            style={{ 
+              color: 'rgba(255,255,255,0.85)',
+              WebkitTextStroke: '0.4px rgba(255,255,255,0.2)',
+              paintOrder: 'stroke fill',
+            }}
+          >
+            Défiler pour entrer
+          </p>
+          <motion.div
+            className="w-px h-10 bg-accent/60"
+            animate={{ scaleY: [1, 0.4, 1] }}
+            transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut' }}
+          />
+        </div>
+      </motion.div>
+    </div>
   )
 }
 
@@ -308,16 +331,6 @@ function CollectionOverlay({ scrollY }: { scrollY: any }) { // eslint-disable-li
       style={{ opacity, y }}
       className="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none z-30"
     >
-      <p
-        className="font-body text-xs tracking-widest3 uppercase mb-4"
-        style={{
-          color: 'var(--color-accent)',
-          textShadow: '0 1px 4px rgba(0,0,0,0.6)',
-          WebkitTextStroke: '0.4px rgba(0,0,0,0.55)',
-        }}
-      >
-        Collection Permanente
-      </p>
     </motion.div>
   )
 }

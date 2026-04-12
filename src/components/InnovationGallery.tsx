@@ -640,31 +640,31 @@ export default function InnovationGallery() {
           ))}
           <ProgressBar scrollFraction={seq4Fraction} />
 
-          {/* ── Salle 05 intro (very short, leads directly into Q1) ────── */}
-          <Salle05Intro seq5Fraction={seq5Fraction} />
+          {/* ── Salle 05 — .no-stroke removes global text-stroke from ChalkBoard font ── */}
+          <div className="no-stroke" style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
 
-          {/* ── 5 scroll-driven quiz cards ────────────────────────────── */}
-          {QUIZ_QUESTIONS.map((_, i) => (
-            <QuizCard
-              key={i}
-              qIndex={i}
-              seq5Fraction={seq5Fraction}
-              answer={answers[i]}
-              onAnswer={(sel, ok) => handleAnswer(i, sel, ok)}
-            />
-          ))}
+            <Salle05Intro seq5Fraction={seq5Fraction} />
 
-          {/* ── Quiz progress banner ──────────────────────────────────── */}
-          <QuizBanner seq5Fraction={seq5Fraction} answeredCount={answeredCount} />
+            {QUIZ_QUESTIONS.map((_, i) => (
+              <QuizCard
+                key={i}
+                qIndex={i}
+                seq5Fraction={seq5Fraction}
+                answer={answers[i]}
+                onAnswer={(sel, ok) => handleAnswer(i, sel, ok)}
+              />
+            ))}
 
-          {/* ── Défi (white zone, scroll-driven, visible only after allDone) */}
-          <DefiCard seq5Fraction={seq5Fraction} allDone={allDone} />
+            <QuizBanner seq5Fraction={seq5Fraction} answeredCount={answeredCount} />
 
-          {/* ── Bottom label ───────────────────────────────────────────── */}
-          <div className="absolute bottom-5 left-1/2 -translate-x-1/2 pointer-events-none z-40">
-            <p className="text-center" style={{ fontFamily: isWhiteZone ? CHALK : undefined, color: isWhiteZone ? 'rgba(0,0,0,0.22)' : 'rgba(255,255,255,0.22)', fontSize: 9, letterSpacing: '0.20em', textTransform: 'uppercase' }}>
-              {isWhiteZone ? "Zone d'Action · ODD 12 & 13" : "Galerie · Zone d'Action · ODD 12 & 13"}
-            </p>
+            <DefiCard seq5Fraction={seq5Fraction} allDone={allDone} />
+
+            <div className="absolute bottom-5 left-1/2 -translate-x-1/2 pointer-events-none z-40">
+              <p className="text-center" style={{ fontFamily: isWhiteZone ? CHALK : undefined, color: isWhiteZone ? 'rgba(0,0,0,0.22)' : 'rgba(255,255,255,0.22)', fontSize: 9, letterSpacing: '0.20em', textTransform: 'uppercase' }}>
+                {isWhiteZone ? "Zone d'Action · ODD 12 & 13" : "Galerie · Zone d'Action · ODD 12 & 13"}
+              </p>
+            </div>
+
           </div>
         </div>
       </section>

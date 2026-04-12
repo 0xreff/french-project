@@ -120,3 +120,14 @@ header a, header nav a {
 
 /* Selection */
 ::selection { background: var(--color-accent); color: #0a0a08; }
+
+/* ── No-stroke utility ───────────────────────────────────────────────
+   Used in Salle 05 where ChalkBoard handwritten font is active.
+   The global -webkit-text-stroke makes handwritten fonts look doubled/blurry.
+─────────────────────────────────────────────────────────────────── */
+.no-stroke h1, .no-stroke h2, .no-stroke h3,
+.no-stroke p,  .no-stroke li, .no-stroke a,
+.no-stroke span, .no-stroke button, .no-stroke strong {
+  -webkit-text-stroke: 0 !important;
+  text-stroke: 0 !important;
+}

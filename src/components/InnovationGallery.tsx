@@ -253,11 +253,12 @@ function QuizCard({ qIndex, seq5Fraction, answer, onAnswer }: {
   const bgBlurV   = useTransform(seq5Fraction, [lo, p1end, p2end, hi], [0, 3, 3, 0])
   const bgBlur    = useTransform(bgBlurV, (b) => `blur(${b}px) saturate(120%)`)
 
-  // Local state for interaction feedback; merges with parent answer (for re-visits)
-  const [localSel, setLocalSel] = useState<number | null>(answer?.selected ?? null)
-  const [localRes, setLocalRes] = useState(answer !== null)
+  // Local state for interaction + flash color
+  const [localSel,   setLocalSel]   = useState<number | null>(answer?.selected ?? null)
+  const [localRes,   setLocalRes]   = useState(answer !== null)
+  const [flashColor, setFlashColor] = useState<'green' | 'red' | null>(null)
 
-  // Sync if parent answer changes (e.g. component doesn't unmount between visits)
+  // Sync if parent already has an answer (card re-visited after scroll back)
   useEffect(() => {
     if (answer !== null && localSel === null) {
       setLocalSel(answer.selected); setLocalRes(true)
@@ -269,24 +270,45 @@ function QuizCard({ qIndex, seq5Fraction, answer, onAnswer }: {
 
   const handleSelect = (idx: number) => {
     if (displaySel !== null) return
-    setLocalSel(idx); setLocalRes(true)
-    setTimeout(() => onAnswer(idx, idx === q.correct), 900)
+    const correct = idx === q.correct
+    setLocalSel(idx)
+    setLocalRes(true)
+    setFlashColor(correct ? 'green' : 'red')
+    // Call parent after showing result (950ms)
+    setTimeout(() => {
+      setFlashColor(null)
+      onAnswer(idx, correct)
+    }, 950)
   }
+
+  // Card border/bg when flashing
+  const cardBg     = flashColor === 'green' ? 'rgba(30,120,80,0.55)'
+                   : flashColor === 'red'   ? 'rgba(160,30,30,0.55)'
+                   : 'rgba(14,22,12,0.72)'
+  const cardBorder = flashColor === 'green' ? '1.5px solid rgba(78,205,196,0.70)'
+                   : flashColor === 'red'   ? '1.5px solid rgba(255,100,100,0.70)'
+                   : '1px solid rgba(255,255,255,0.12)'
+  const cardGlow   = flashColor === 'green' ? '0 0 40px rgba(78,205,196,0.30), 0 30px 80px rgba(0,0,0,0.45)'
+                   : flashColor === 'red'   ? '0 0 40px rgba(255,100,100,0.25), 0 30px 80px rgba(0,0,0,0.45)'
+                   : `0 0 0 1px ${ACCENT5}18, 0 30px 80px rgba(0,0,0,0.45)`
 
   return (
     <motion.div style={{ opacity, pointerEvents: ptrEvts }} className="absolute inset-0 flex items-center justify-center z-30 px-6 md:px-16">
       <motion.div className="absolute inset-0 pointer-events-none" style={{ opacity: bgOpacity, backdropFilter: bgBlur, WebkitBackdropFilter: bgBlur, background: `radial-gradient(ellipse at 50% 50%, ${ACCENT5}06 0%, rgba(10,16,10,0.20) 60%, transparent 100%)` }} />
-      <motion.div style={{ scale, y, filter, maxWidth: '860px' }} className="w-full relative z-10">
-        <GlassCard5>
+      <motion.div style={{ scale, y, filter, maxWidth: '860px' }} className="w-full relative z-10 flex flex-col items-center gap-4">
+        {/* Glass card — flashes green/red on answer */}
+        <div style={{ width: '100%', background: cardBg, backdropFilter: 'blur(40px) saturate(200%) brightness(1.08)', WebkitBackdropFilter: 'blur(40px) saturate(200%) brightness(1.08)', border: cardBorder, borderRadius: 'clamp(18px,2.5vw,26px)', boxShadow: cardGlow, overflow: 'hidden', position: 'relative', padding: 'clamp(1.8rem,3.5vw,2.8rem)', transition: 'background 0.35s ease, border 0.35s ease, box-shadow 0.35s ease' }}>
+          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 1, pointerEvents: 'none', background: 'linear-gradient(to right, transparent, rgba(255,255,255,0.32) 50%, transparent)' }} />
           <div className="flex items-center justify-between mb-4">
             <div>
               <p style={{ fontFamily: CHALK, color: ACCENT5, fontSize: 12, letterSpacing: '0.18em', textTransform: 'uppercase', marginBottom: 4 }}>
                 Question {qIndex + 1} / {QUIZ_QUESTIONS.length}
               </p>
               {displayRes && (
-                <p style={{ fontFamily: CHALK, fontSize: 14, color: displaySel === q.correct ? '#4ecdc4' : '#ff6b9d' }}>
+                <motion.p initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }}
+                  style={{ fontFamily: CHALK, fontSize: 14, color: displaySel === q.correct ? '#4ecdc4' : '#ff6b9d' }}>
                   {displaySel === q.correct ? '✓ Bonne réponse !' : `✗ Mauvaise — bonne : ${q.options[q.correct]}`}
-                </p>
+                </motion.p>
               )}
             </div>
             <div style={{ width: 42, height: 42, borderRadius: '50%', background: `${ACCENT5}20`, border: `2px solid ${ACCENT5}50`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
@@ -301,8 +323,8 @@ function QuizCard({ qIndex, seq5Fraction, answer, onAnswer }: {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {q.options.map((opt, idx) => {
               let border = 'rgba(255,255,255,0.12)', bg = 'rgba(255,255,255,0.04)', color = 'rgba(255,255,255,0.78)'
-              if (displayRes && idx === q.correct)                          { border = 'rgba(78,205,196,0.60)'; bg = 'rgba(78,205,196,0.12)'; color = '#4ecdc4' }
-              if (displayRes && idx === displaySel && idx !== q.correct)    { border = 'rgba(255,107,107,0.60)'; bg = 'rgba(255,107,107,0.10)'; color = '#ff6b9d' }
+              if (displayRes && idx === q.correct)                        { border = 'rgba(78,205,196,0.60)'; bg = 'rgba(78,205,196,0.12)'; color = '#4ecdc4' }
+              if (displayRes && idx === displaySel && idx !== q.correct)  { border = 'rgba(255,107,107,0.60)'; bg = 'rgba(255,107,107,0.10)'; color = '#ff6b9d' }
               return (
                 <button key={idx} onClick={() => handleSelect(idx)} disabled={displaySel !== null}
                   className="text-left transition-all duration-300"
@@ -313,31 +335,35 @@ function QuizCard({ qIndex, seq5Fraction, answer, onAnswer }: {
               )
             })}
           </div>
-        </GlassCard5>
+        </div>
+        {/* "Répondez pour avancer" — centered below the card, hidden once answered */}
+        <AnimatePresence>
+          {displaySel === null && (
+            <motion.p
+              initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
+              transition={{ duration: 0.4 }}
+              style={{ fontFamily: CHALK, color: 'rgba(255,255,255,0.55)', fontSize: 16, textAlign: 'center', pointerEvents: 'none' }}
+            >
+              Répondez pour avancer ↓
+            </motion.p>
+          )}
+        </AnimatePresence>
       </motion.div>
     </motion.div>
   )
 }
 
-// Persistent quiz zone banner — fades in as Q1 appears, shows current progress
-// UP scroll always free — this is just a reminder
+// Bottom progress dots — shows which questions are answered
 function QuizBanner({ seq5Fraction, answeredCount }: { seq5Fraction: any; answeredCount: number }) { // eslint-disable-line @typescript-eslint/no-explicit-any
   const opacity = useTransform(seq5Fraction, [0.07, 0.11], [0, 1])
   if (answeredCount >= QUIZ_QUESTIONS.length) return null
   return (
-    <motion.div style={{ opacity }} className="absolute bottom-12 left-0 right-0 flex justify-center pointer-events-none z-50">
-      <div className="flex items-center gap-3 px-5 py-2.5"
-        style={{ background: 'rgba(14,22,12,0.88)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)', border: `1px solid ${ACCENT5}50`, borderRadius: 12, boxShadow: '0 8px 30px rgba(0,0,0,0.35)' }}>
-        {/* Progress dots */}
-        <div className="flex gap-1.5 items-center">
-          {QUIZ_QUESTIONS.map((_, i) => (
-            <div key={i} style={{ width: i < answeredCount ? 18 : 8, height: 8, borderRadius: 4, background: i < answeredCount ? ACCENT5 : 'rgba(255,255,255,0.20)', transition: 'all 0.4s cubic-bezier(0.16,1,0.3,1)' }} />
-          ))}
-        </div>
-        <p style={{ fontFamily: CHALK, color: '#fff', fontSize: 15 }}>
-          <strong style={{ color: ACCENT5 }}>Question {answeredCount + 1}/{QUIZ_QUESTIONS.length}</strong>
-          {' '}— répondez pour avancer ↓
-        </p>
+    <motion.div style={{ opacity }} className="absolute bottom-10 left-0 right-0 flex justify-center pointer-events-none z-50">
+      <div className="flex items-center gap-2 px-4 py-2"
+        style={{ background: 'rgba(14,22,12,0.80)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)', border: `1px solid ${ACCENT5}40`, borderRadius: 20 }}>
+        {QUIZ_QUESTIONS.map((_, i) => (
+          <div key={i} style={{ width: i < answeredCount ? 18 : 8, height: 8, borderRadius: 4, background: i < answeredCount ? ACCENT5 : 'rgba(255,255,255,0.20)', transition: 'all 0.4s cubic-bezier(0.16,1,0.3,1)' }} />
+        ))}
       </div>
     </motion.div>
   )
@@ -549,12 +575,26 @@ export default function InnovationGallery() {
     return () => { window.removeEventListener('mousemove', onMove); cancelAnimationFrame(rafRef.current) }
   }, [isWhiteZone])
 
-  // ── Answer handler ────────────────────────────────────────────────────────
+  // ── Answer handler + auto-scroll to next question ────────────────────────
   const handleAnswer = useCallback((qIndex: number, selected: number, correct: boolean) => {
     setAnswers(prev => {
       if (prev[qIndex] !== null) return prev
       const next = [...prev]; next[qIndex] = { selected, correct }; return next
     })
+    // After feedback is shown (same 950ms delay), auto-scroll to next question
+    setTimeout(() => {
+      if (!containerRef.current) return
+      const el        = containerRef.current
+      const offsetTop = el.getBoundingClientRect().top + window.scrollY
+      const maxScroll = el.offsetHeight - window.innerHeight
+      const nextIdx   = qIndex + 1
+      // Target: next Q midpoint cap, or white zone if all answered
+      const targetSeq5Frac = nextIdx < QUIZ_QUESTIONS.length
+        ? QUIZ_CAP_FRACS[nextIdx]   // next question's midpoint
+        : 0.92                       // white zone (défi)
+      const targetScrollY = offsetTop + (0.5 + targetSeq5Frac * 0.5) * maxScroll
+      window.scrollTo({ top: targetScrollY, behavior: 'smooth' })
+    }, 950)
   }, [])
 
   return (

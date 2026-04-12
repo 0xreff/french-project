@@ -432,9 +432,8 @@ export default function ActNowZone() {
     return Math.min(Math.max((latest - offsetTop) / maxScroll, 0), 1)
   })
 
-  // Entry overlay: fades from black to clear in the first 5% of scroll
-  // — mirrors InnovationGallery's exitOpacity for seamless dip-to-black
-  const entryOpacity = useTransform(scrollFraction, [0.0, 0.05], [1, 0])
+  // Entry is seamless — same frame continues from sequence-4 (no fade needed)
+  // z-index: 2 on section ensures ActNowZone sits ON TOP during sticky overlap
 
   // ── Scroll mode: drive frames normally until last frame ─────────────────
   useMotionValueEvent(scrollFraction, 'change', (frac) => {
@@ -522,6 +521,8 @@ export default function ActNowZone() {
         // White background once cinematic sequence is done (quiz / challenge)
         background: mode === 'scroll' ? '#000000' : '#ffffff',
         transition: 'background 0.6s ease',
+        position: 'relative',
+        zIndex: 2,
       }}
     >
       <div className="sticky top-0 w-full h-screen overflow-hidden" style={{ contain: 'layout style paint' }}>
@@ -559,11 +560,7 @@ export default function ActNowZone() {
           </>
         )}
 
-        {/* ── Entry dip-from-black overlay (mirrors Salle 04 exit fade) ── */}
-        <motion.div
-          className="absolute inset-0 bg-black pointer-events-none z-50"
-          style={{ opacity: entryOpacity }}
-        />
+        {/* ── Entry is seamless (same frame as sequence-4 last frame) ────── */}
 
         {/* ── Content panels ────────────────────────────────────────────── */}
 

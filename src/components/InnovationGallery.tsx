@@ -528,8 +528,7 @@ export default function InnovationGallery() {
     return Math.min(Math.max((latest - offsetTop) / maxScroll, 0), 1)
   })
 
-  // ── Dip-to-black: fade out last 8% so Salle 05 entry is seamless ─────────
-  const exitOpacity = useTransform(scrollFraction, [0.92, 1.0], [0, 1])
+  // (no exit overlay needed — last frame of seq4 == first frame of seq5)
 
   // ── drawFrame — identical to HeroScroll ─────────────────────────────────
   const drawFrame = useCallback(
@@ -610,7 +609,7 @@ export default function InnovationGallery() {
         id="innovation"
         ref={containerRef}
         className="relative"
-        style={{ height: `${(SCROLL_MULTIPLIER + 1) * 100}vh`, background: '#000' }}
+        style={{ height: `${(SCROLL_MULTIPLIER + 1) * 100}vh`, background: '#000', position: 'relative', zIndex: 1 }}
       >
         <div
           className="sticky top-0 w-full h-screen overflow-hidden"
@@ -690,11 +689,6 @@ export default function InnovationGallery() {
               Galerie d&apos;Innovation · ODD 12 &amp; 13
             </p>
           </motion.div>
-          {/* ── Dip-to-black exit overlay — fades in at section end ── */}
-          <motion.div
-            className="absolute inset-0 bg-black pointer-events-none z-50"
-            style={{ opacity: exitOpacity }}
-          />
         </div>
       </section>
 

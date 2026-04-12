@@ -10,7 +10,8 @@ const SEQ5_START_FRAME = 2     // skip frames 0-1 (start at file 003)
 const SCROLL_MULTIPLIER = 8    // each sequence ≈ 900vh → 1700vh section total
 
 // ─── Fonts / Colours ─────────────────────────────────────────────────────────
-const CHALK   = "var(--font-caveat), 'Caveat', cursive"
+// ChalkBoard.ttf is loaded via @font-face in globals.css from /public/fonts/
+const CHALK   = "'ChalkBoard', cursive"
 const ACCENT4 = '#4ecdc4'
 const ACCENT5 = '#c9a96e'
 
@@ -192,9 +193,9 @@ function ProgressBar({ scrollFraction }: { scrollFraction: any }) { // eslint-di
 // Salle 05 sub-components
 // ─────────────────────────────────────────────────────────────────────────────
 
-function GlassCard5({ children, maxWidth = '860px', accent = ACCENT5 }: { children: React.ReactNode; maxWidth?: string; accent?: string }) {
+function GlassCard5({ children, maxWidth = '860px', accent = ACCENT5, padding }: { children: React.ReactNode; maxWidth?: string; accent?: string; padding?: string }) {
   return (
-    <div style={{ width: '100%', maxWidth, background: 'rgba(14,22,12,0.72)', backdropFilter: 'blur(40px) saturate(200%) brightness(1.08)', WebkitBackdropFilter: 'blur(40px) saturate(200%) brightness(1.08)', border: '1px solid rgba(255,255,255,0.12)', borderRadius: 'clamp(18px,2.5vw,26px)', boxShadow: `0 0 0 1px ${accent}18, 0 30px 80px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.12)`, overflow: 'hidden', position: 'relative', padding: 'clamp(1.8rem,3.5vw,2.8rem)' }}>
+    <div style={{ width: '100%', maxWidth, background: 'rgba(14,22,12,0.72)', backdropFilter: 'blur(40px) saturate(200%) brightness(1.08)', WebkitBackdropFilter: 'blur(40px) saturate(200%) brightness(1.08)', border: '1px solid rgba(255,255,255,0.12)', borderRadius: 'clamp(18px,2.5vw,26px)', boxShadow: `0 0 0 1px ${accent}18, 0 30px 80px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.12)`, overflow: 'hidden', position: 'relative', padding: padding ?? 'clamp(1.8rem,3.5vw,2.8rem)' }}>
       <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 1, pointerEvents: 'none', background: 'linear-gradient(to right, transparent, rgba(255,255,255,0.32) 50%, transparent)' }} />
       {children}
     </div>
@@ -369,59 +370,60 @@ function QuizBanner({ seq5Fraction, answeredCount }: { seq5Fraction: any; answer
   )
 }
 
-// Défi card — scroll-driven, appears in white zone at end of seq5
+// Défi card — wider (2-col grid), compact height, fits on screen without scroll
 function DefiCard({ seq5Fraction, allDone }: { seq5Fraction: any; allDone: boolean }) { // eslint-disable-line @typescript-eslint/no-explicit-any
   const [checked, setChecked] = useState<boolean[]>(new Array(7).fill(false))
   const toggle = (i: number) => setChecked((p) => { const n = [...p]; n[i] = !n[i]; return n })
   const done = checked.filter(Boolean).length
 
-  // Card enters only after all 5 answered (scroll cap released)
-  // Fade in as user scrolls into white zone
   const opacity = useTransform(seq5Fraction, [0.89, 0.93], [0, 1])
   const scale   = useTransform(seq5Fraction, [0.89, 0.93], [0.88, 1.0])
   const ptrEvts = useTransform(opacity, (o) => ((o > 0.1 && allDone) ? 'auto' : 'none'))
 
   return (
-    <motion.div style={{ opacity, pointerEvents: ptrEvts }} className="absolute inset-0 flex items-center justify-center z-30 px-4 md:px-10 overflow-y-auto py-6">
-      <motion.div style={{ scale, maxWidth: '860px' }} className="w-full">
-        <GlassCard5>
-          <div className="flex items-center justify-between mb-4">
+    <motion.div style={{ opacity, pointerEvents: ptrEvts }} className="absolute inset-0 flex items-center justify-center z-30 px-4 md:px-8">
+      <motion.div style={{ scale, width: '100%', maxWidth: 'min(95vw, 1100px)' }}>
+        <GlassCard5 maxWidth="min(95vw, 1100px)" padding="clamp(1.1rem, 2vw, 1.6rem)">
+          {/* Header */}
+          <div className="flex items-center justify-between mb-3">
             <div>
-              <p style={{ fontFamily: CHALK, color: ACCENT5, fontSize: 12, letterSpacing: '0.18em', textTransform: 'uppercase', marginBottom: 4 }}>Défi 7 jours — Zone d&apos;Action</p>
-              <h3 style={{ fontFamily: CHALK, color: '#fff', fontSize: 'clamp(1.5rem,3vw,2.2rem)', fontWeight: 700 }}>Semaine Verte 🌿</h3>
+              <p style={{ fontFamily: CHALK, color: ACCENT5, fontSize: 11, letterSpacing: '0.16em', textTransform: 'uppercase', marginBottom: 2 }}>Défi 7 jours — Zone d&apos;Action</p>
+              <h3 style={{ fontFamily: CHALK, color: '#fff', fontSize: 'clamp(1.3rem,2.5vw,1.9rem)', fontWeight: 700 }}>Semaine Verte 🌿</h3>
             </div>
             <div className="text-right">
-              <p style={{ fontFamily: CHALK, color: ACCENT5, fontSize: 32, fontWeight: 700, lineHeight: 1 }}>{done}/7</p>
-              <p style={{ fontFamily: CHALK, color: 'rgba(255,255,255,0.40)', fontSize: 13 }}>accomplis</p>
+              <p style={{ fontFamily: CHALK, color: ACCENT5, fontSize: 28, fontWeight: 700, lineHeight: 1 }}>{done}/7</p>
+              <p style={{ fontFamily: CHALK, color: 'rgba(255,255,255,0.40)', fontSize: 11 }}>accomplis</p>
             </div>
           </div>
-          <div style={{ width: '100%', height: 2, background: 'rgba(255,255,255,0.10)', borderRadius: 2, marginBottom: '1rem', overflow: 'hidden' }}>
+          {/* Progress bar */}
+          <div style={{ width: '100%', height: 2, background: 'rgba(255,255,255,0.10)', borderRadius: 2, marginBottom: '0.75rem', overflow: 'hidden' }}>
             <motion.div style={{ height: '100%', background: 'linear-gradient(90deg, #4ecdc4, #c9a96e)' }} animate={{ width: `${(done / 7) * 100}%` }} transition={{ duration: 0.5 }} />
           </div>
-          <div className="space-y-2">
+          {/* 2-column grid of challenges — cuts height nearly in half */}
+          <div className="grid grid-cols-2 gap-2">
             {CHALLENGES.map((ch, i) => (
-              <button key={ch.day} onClick={() => toggle(i)} className="w-full flex items-center gap-3 p-3 text-left transition-all duration-300"
-                style={{ background: checked[i] ? 'rgba(78,205,196,0.08)' : 'rgba(255,255,255,0.03)', border: `1px solid ${checked[i] ? 'rgba(78,205,196,0.30)' : 'rgba(255,255,255,0.08)'}`, borderRadius: 10 }}>
+              <button key={ch.day} onClick={() => toggle(i)} className="w-full flex items-center gap-2 text-left transition-all duration-300"
+                style={{ padding: '0.55rem 0.75rem', background: checked[i] ? 'rgba(78,205,196,0.08)' : 'rgba(255,255,255,0.03)', border: `1px solid ${checked[i] ? 'rgba(78,205,196,0.30)' : 'rgba(255,255,255,0.08)'}`, borderRadius: 8 }}>
                 <div className="flex items-center justify-center shrink-0 transition-all duration-300"
-                  style={{ width: 20, height: 20, background: checked[i] ? '#4ecdc4' : 'transparent', border: `2px solid ${checked[i] ? '#4ecdc4' : 'rgba(255,255,255,0.25)'}`, borderRadius: 5 }}>
-                  {checked[i] && <svg className="w-3 h-3 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>}
+                  style={{ width: 18, height: 18, background: checked[i] ? '#4ecdc4' : 'transparent', border: `2px solid ${checked[i] ? '#4ecdc4' : 'rgba(255,255,255,0.25)'}`, borderRadius: 4 }}>
+                  {checked[i] && <svg className="w-2.5 h-2.5 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>}
                 </div>
-                <span className="text-base shrink-0">{ch.icon}</span>
-                <div>
-                  <p style={{ fontFamily: CHALK, color: ACCENT5, fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 1 }}>Jour {ch.day}</p>
-                  <p style={{ fontFamily: CHALK, color: checked[i] ? 'rgba(255,255,255,0.35)' : 'rgba(255,255,255,0.80)', fontSize: 'clamp(0.9rem,1.4vw,1rem)', textDecoration: checked[i] ? 'line-through' : 'none' }}>{ch.task}</p>
+                <span className="text-sm shrink-0">{ch.icon}</span>
+                <div className="min-w-0">
+                  <p style={{ fontFamily: CHALK, color: ACCENT5, fontSize: 10, textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 1 }}>Jour {ch.day}</p>
+                  <p style={{ fontFamily: CHALK, color: checked[i] ? 'rgba(255,255,255,0.35)' : 'rgba(255,255,255,0.82)', fontSize: 'clamp(0.8rem,1.2vw,0.9rem)', textDecoration: checked[i] ? 'line-through' : 'none', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{ch.task}</p>
                 </div>
               </button>
             ))}
           </div>
           {done === 7 && (
-            <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="mt-4 p-3 text-center" style={{ background: 'rgba(78,205,196,0.10)', border: '1px solid rgba(78,205,196,0.30)', borderRadius: 12 }}>
-              <p style={{ fontFamily: CHALK, color: '#4ecdc4', fontSize: 22, fontWeight: 700 }}>🌍 Défi accompli !</p>
+            <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="mt-3 p-2.5 text-center" style={{ background: 'rgba(78,205,196,0.10)', border: '1px solid rgba(78,205,196,0.30)', borderRadius: 10 }}>
+              <p style={{ fontFamily: CHALK, color: '#4ecdc4', fontSize: 20, fontWeight: 700 }}>🌍 Défi accompli !</p>
             </motion.div>
           )}
-          <div className="flex gap-3 mt-5 justify-center">
-            <a href="https://sdgs.un.org/goals/goal12" target="_blank" rel="noopener noreferrer" style={{ fontFamily: CHALK, fontSize: 13, padding: '8px 20px', border: '1px solid rgba(255,255,255,0.20)', color: 'rgba(255,255,255,0.55)', borderRadius: 8 }}>ODD 12</a>
-            <a href="https://sdgs.un.org/goals/goal13" target="_blank" rel="noopener noreferrer" style={{ fontFamily: CHALK, fontSize: 13, padding: '8px 20px', background: `${ACCENT5}22`, border: `1px solid ${ACCENT5}55`, color: ACCENT5, borderRadius: 8 }}>ODD 13</a>
+          <div className="flex gap-3 mt-3 justify-center">
+            <a href="https://sdgs.un.org/goals/goal12" target="_blank" rel="noopener noreferrer" style={{ fontFamily: CHALK, fontSize: 12, padding: '6px 18px', border: '1px solid rgba(255,255,255,0.20)', color: 'rgba(255,255,255,0.55)', borderRadius: 8 }}>ODD 12</a>
+            <a href="https://sdgs.un.org/goals/goal13" target="_blank" rel="noopener noreferrer" style={{ fontFamily: CHALK, fontSize: 12, padding: '6px 18px', background: `${ACCENT5}22`, border: `1px solid ${ACCENT5}55`, color: ACCENT5, borderRadius: 8 }}>ODD 13</a>
           </div>
         </GlassCard5>
       </motion.div>

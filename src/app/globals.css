@@ -1,3 +1,12 @@
+/* ── Local fonts ─────────────────────────────────────── */
+@font-face {
+  font-family: 'ChalkBoard';
+  src: url('/fonts/ChalkBoard.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
